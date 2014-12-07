@@ -28,13 +28,13 @@ class ViewController: UIViewController {
         
         mapShowButton.enabled = false
         mapShowButton.hidden = true
-
+        
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
-      
+        
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
@@ -49,9 +49,6 @@ class ViewController: UIViewController {
     }
     
     // json parser
-    func getJSON(urlToRequest: String) -> NSData{
-        return NSData(contentsOfURL: NSURL(string: urlToRequest)!)!
-    }
     
     func parseJSON(inputData: NSData) -> NSDictionary{
         var error: NSError?
@@ -59,18 +56,57 @@ class ViewController: UIViewController {
         return jsonDictionary
     }
     
-    // actions
-    @IBAction func loadJsonAction (){
+    
+    func loadJson() {
         
+        // init action
         actIndicator.startAnimating()
-        self.jsonTextView.text = "loading data..."
+        mapShowButton.enabled = false
+        mapShowButton.hidden = true
+        jsonButton.enabled = false
+        jsonButton.hidden = false
+        
+        jsonTextView.text = "loading data..."
         
         // json data, replace it with your own location
         let jsonURLString = "http://winklerstudio.com/test.json"
-        let jsonURL = NSURL(string: jsonURLString)!
+        let jsonURL: NSURL? = NSURL(string: jsonURLString)!
+        var dataJSON: NSData?
         
         // parse data
-        var parsedJSON = parseJSON(getJSON(jsonURLString))
+        if jsonURL == nil {
+            self.displayAlertWithTitle("Data download problem",
+                message: "Can't read data")
+            // buttons
+            self.mapShowButton.enabled = false
+            self.mapShowButton.hidden = true
+            self.jsonButton.enabled = true
+            
+            self.actIndicator.stopAnimating()
+            
+            return
+            
+        }
+        
+        //
+        dataJSON = NSData(contentsOfURL: jsonURL!)
+        
+        if dataJSON == nil {
+            self.displayAlertWithTitle("Data download problem",
+                message: "Can't read data")
+            
+            // buttons
+            self.mapShowButton.enabled = false
+            self.mapShowButton.hidden = true
+            self.jsonButton.enabled = true
+            
+            self.actIndicator.stopAnimating()
+            
+            return
+        }
+        
+        //
+        var parsedJSON = self.parseJSON(dataJSON!)
         
         jsonImage = parsedJSON["image"] as String
         jsonLongitude = parsedJSON["location"]!["longitude"] as CLLocationDegrees
@@ -98,8 +134,7 @@ class ViewController: UIViewController {
                 // buttons
                 self.mapShowButton.enabled = true
                 self.mapShowButton.hidden = false
-                self.jsonButton.enabled = false
-                self.jsonButton.hidden = true
+                self.jsonButton.enabled = true
                 
                 self.actIndicator.stopAnimating()
                 
@@ -110,10 +145,38 @@ class ViewController: UIViewController {
             
         })
         
+        
     }
     
     // actions
+    @IBAction func loadJsonAction (){
+        println("loadJsonAction")
+        
+        if Reachability.isConnectedToNetwork() {
+            println("connection ok")
+            self.loadJson()
+        } else {
+            self.displayAlertWithTitle("Network connection problem",
+                message: "Can't connect to network")
+        }
+    }
+    
     @IBAction func unwindToViewController (sender: UIStoryboardSegue){
+        
+    }
+    
+    // alert
+    func displayAlertWithTitle(title: String, message: String){
+        
+        let controller = UIAlertController(title: title,
+            message: message,
+            preferredStyle: .Alert)
+        
+        controller.addAction(UIAlertAction(title: "OK",
+            style: .Default,
+            handler: nil))
+        
+        presentViewController(controller, animated: true, completion: nil)
         
     }
     

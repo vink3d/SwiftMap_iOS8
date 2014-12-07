@@ -18,7 +18,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     @IBOutlet weak var mapView: MKMapView!
     
     //data
-    var manager = CLLocationManager()
+    var manager: CLLocationManager?
 
     var image: UIImage!
     var latitude:CLLocationDegrees = 52.115489
@@ -106,22 +106,31 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
                 case .Denied:
                     displayAlertWithTitle("Not Determined",
                         message: "Location services are not allowed for this app")
+                    println("location service denied")
                     
                 case .NotDetermined:
-                    manager.delegate = self
-                    manager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
-                    manager.requestWhenInUseAuthorization()
-                    manager.startUpdatingLocation()
-                    
+                    self.manager = CLLocationManager()
+
+                    self.manager!.delegate = self
+                    self.manager!.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+                    self.manager!.requestWhenInUseAuthorization()
+                    self.manager!.startUpdatingLocation()
+                    println("location service not determined")
+
                 case .Restricted:
                     displayAlertWithTitle("Restricted",
                         message: "Location services are not allowed for this app")
-                    
+                    println("location service restricted")
+
                 default:
-                    manager.delegate = self
-                    manager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
-                    manager.requestWhenInUseAuthorization()
-                    manager.startUpdatingLocation()
+                    self.manager = CLLocationManager()
+                    
+                    self.manager!.delegate = self
+                    self.manager!.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+                    self.manager!.requestWhenInUseAuthorization()
+                    self.manager!.startUpdatingLocation()
+                    println("location service default")
+
             }
             
             
@@ -143,8 +152,9 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         mapView.addAnnotations([jsonAnnotation])
         
         /* And now center the map around the point */
-        setCenterOfMapToLocation(self.coordTarget)
-        
+        if(coordTarget != nil){
+            setCenterOfMapToLocation(coordTarget)
+        }
     }
 
     func setCenterOfMapToLocation(location: CLLocationCoordinate2D){
@@ -216,7 +226,8 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         if let containsPlacemark = placemark {
             
             //stop updating location to save battery life
-            manager.stopUpdatingLocation()
+            
+            manager!.stopUpdatingLocation()
             
             let locality = (containsPlacemark.locality != nil) ? containsPlacemark.locality : ""
             let postalCode = (containsPlacemark.postalCode != nil) ? containsPlacemark.postalCode : ""
@@ -248,15 +259,27 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     }
     
     @IBAction func centerOnMe(sender: AnyObject) {
-        setCenterOfMapToLocation(coordUser)
+        if (coordUser != nil) {
+            setCenterOfMapToLocation(coordUser)
+        } else {
+            displayAlertWithTitle("GPS problem",
+                message: "Cant determine your location")
+        }
     }
     
     @IBAction func centerOnTarget(sender: AnyObject) {
-        setCenterOfMapToLocation(coordTarget)
+        if (coordTarget != nil) {
+            setCenterOfMapToLocation(coordTarget)
+        }
     }
     
     @IBAction func findDirections(sender: AnyObject) {
-        getDirections()
+        if (coordUser != nil) {
+            getDirections()
+        } else {
+            displayAlertWithTitle("GPS problem",
+                message: "Cant determine your location")
+        }
     }
     
     // alert

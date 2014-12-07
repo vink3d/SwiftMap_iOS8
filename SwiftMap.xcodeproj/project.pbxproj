@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		8317C5991A338DC300257AC8 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8317C5981A338DC300257AC8 /* MapKit.framework */; };
 		8317C59F1A348D8D00257AC8 /* MapAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8317C59E1A348D8D00257AC8 /* MapAnnotation.swift */; };
+		8317C5A11A34E98200257AC8 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8317C5A01A34E98200257AC8 /* Reachability.swift */; };
+		8317C5A31A34E9AD00257AC8 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8317C5A21A34E9AD00257AC8 /* SystemConfiguration.framework */; };
 		833733091A332F0800D0AC72 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 833733081A332F0800D0AC72 /* CoreLocation.framework */; };
 		834222D51A32FB0500FC2998 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834222D41A32FB0500FC2998 /* AppDelegate.swift */; };
 		834222D71A32FB0500FC2998 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834222D61A32FB0500FC2998 /* ViewController.swift */; };
@@ -32,6 +34,8 @@
 /* Begin PBXFileReference section */
 		8317C5981A338DC300257AC8 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		8317C59E1A348D8D00257AC8 /* MapAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapAnnotation.swift; sourceTree = "<group>"; };
+		8317C5A01A34E98200257AC8 /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
+		8317C5A21A34E9AD00257AC8 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		833733081A332F0800D0AC72 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		834222CF1A32FB0500FC2998 /* SwiftMap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftMap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		834222D31A32FB0500FC2998 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -51,6 +55,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8317C5A31A34E9AD00257AC8 /* SystemConfiguration.framework in Frameworks */,
 				8317C5991A338DC300257AC8 /* MapKit.framework in Frameworks */,
 				833733091A332F0800D0AC72 /* CoreLocation.framework in Frameworks */,
 			);
@@ -69,6 +74,7 @@
 		834222C61A32FB0500FC2998 = {
 			isa = PBXGroup;
 			children = (
+				8317C5A21A34E9AD00257AC8 /* SystemConfiguration.framework */,
 				8317C5981A338DC300257AC8 /* MapKit.framework */,
 				833733081A332F0800D0AC72 /* CoreLocation.framework */,
 				834222D11A32FB0500FC2998 /* SwiftMap */,
@@ -93,6 +99,7 @@
 				834222D61A32FB0500FC2998 /* ViewController.swift */,
 				83D938321A3302CA0003CD55 /* MapViewController.swift */,
 				8317C59E1A348D8D00257AC8 /* MapAnnotation.swift */,
+				8317C5A01A34E98200257AC8 /* Reachability.swift */,
 				834222D81A32FB0500FC2998 /* Main.storyboard */,
 				834222DB1A32FB0500FC2998 /* Images.xcassets */,
 				834222DD1A32FB0500FC2998 /* LaunchScreen.xib */,
@@ -238,6 +245,7 @@
 				8317C59F1A348D8D00257AC8 /* MapAnnotation.swift in Sources */,
 				834222D71A32FB0500FC2998 /* ViewController.swift in Sources */,
 				83D938331A3302CA0003CD55 /* MapViewController.swift in Sources */,
+				8317C5A11A34E98200257AC8 /* Reachability.swift in Sources */,
 				834222D51A32FB0500FC2998 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
