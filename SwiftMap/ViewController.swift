@@ -65,12 +65,12 @@ class ViewController: UIViewController {
         actIndicator.startAnimating()
         self.jsonTextView.text = "loading data..."
         
-        // json data
+        // json data, replace it with your own location
         let jsonURLString = "http://winklerstudio.com/test.json"
         let jsonURL = NSURL(string: jsonURLString)!
         
         // parse data
-        var parsedJSON = parseJSON(getJSON("http://winklerstudio.com/test.json"))
+        var parsedJSON = parseJSON(getJSON(jsonURLString))
         
         jsonImage = parsedJSON["image"] as String
         jsonLongitude = parsedJSON["location"]!["longitude"] as CLLocationDegrees
