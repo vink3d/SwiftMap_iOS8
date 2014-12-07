@@ -203,7 +203,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
             
             println(response)
             
-            if(response != nil && error != nil) {
+            if(response != nil && error == nil) {
                 /* Display the directions on the Maps app */
 
                 let launchOptions = [
