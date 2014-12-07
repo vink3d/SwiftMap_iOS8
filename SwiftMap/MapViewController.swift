@@ -21,7 +21,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     var manager: CLLocationManager?
 
     var image: UIImage!
-    var latitude:CLLocationDegrees = 52.115489
+    var latitude:CLLocationDegrees = 30.115489
     var longitude:CLLocationDegrees = 16.554826
     var text:String = ""
     var jsonAnnotation: MapAnnotation!
@@ -46,6 +46,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         var region = MKCoordinateRegion(center: coordTarget, span: span)
         
         mapView.setRegion(region, animated: true)
+        mapView.mapType = MKMapType.Hybrid
 
     }
     
@@ -56,8 +57,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         
     }
     
-    //
-    
+    // annotations
     func mapView(mapView: MKMapView!,
         viewForAnnotation annotation: MKAnnotation!) -> MKAnnotationView!{
             
@@ -96,6 +96,18 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
             
     }
     
+    func mapView(mapView: MKMapView!, rendererForOverlay overlay: MKOverlay!) -> MKOverlayRenderer! {
+        
+        if overlay is MKPolyline {
+            var polylineRenderer = MKPolylineRenderer(overlay: overlay)
+            polylineRenderer.strokeColor = UIColor.blueColor()
+            polylineRenderer.lineWidth = 4
+            return polylineRenderer
+        }
+        return nil
+    }
+    
+    // manager
     func initManager(){
         
         // test location services
@@ -189,14 +201,22 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         directions.calculateDirectionsWithCompletionHandler{
             (response: MKDirectionsResponse!, error: NSError!) in
             
-            /* Display the directions on the Maps app */
-            let launchOptions = [
-                MKLaunchOptionsDirectionsModeKey:
-            MKLaunchOptionsDirectionsModeDriving]
+            println(response)
             
-            MKMapItem.openMapsWithItems(
-                [response.source, response.destination],
-                launchOptions: launchOptions)
+            if(response != nil) {
+                /* Display the directions on the Maps app */
+
+                let launchOptions = [
+                    MKLaunchOptionsDirectionsModeKey:
+                MKLaunchOptionsDirectionsModeDriving]
+                
+                MKMapItem.openMapsWithItems(
+                    [response.source, response.destination],
+                    launchOptions: launchOptions)
+            } else {
+                self.displayAlertWithTitle("Navigation problem",
+                    message: "Can't display route")
+            }
         }
     
     }
