@@ -162,17 +162,23 @@
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="2Cj-Ug-ZGS"/>
-                                    <barButtonItem title="Route" id="TKN-Jl-FI4">
-                                        <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
-                                        <connections>
-                                            <action selector="findDirections:" destination="iwb-Md-moh" id="e0U-0t-fil"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="hlW-ji-82v"/>
                                     <barButtonItem title="Target" id="d9o-RU-nRI">
                                         <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <connections>
                                             <action selector="centerOnTarget:" destination="iwb-Md-moh" id="vEP-wL-1Mr"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="hlW-ji-82v"/>
+                                    <barButtonItem title="Draw Route" id="gEX-Ju-qUb">
+                                        <connections>
+                                            <action selector="showDirections:" destination="iwb-Md-moh" id="pK8-2C-n6j"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="YCL-Tn-eDx"/>
+                                    <barButtonItem title="Navigation" id="TKN-Jl-FI4">
+                                        <color key="tintColor" red="0.062745098040000002" green="0.68627450980000004" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <connections>
+                                            <action selector="findDirections:" destination="iwb-Md-moh" id="e0U-0t-fil"/>
                                         </connections>
                                     </barButtonItem>
                                 </items>

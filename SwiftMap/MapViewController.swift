@@ -101,7 +101,8 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         if overlay is MKPolyline {
             var polylineRenderer = MKPolylineRenderer(overlay: overlay)
             polylineRenderer.strokeColor = UIColor.blueColor()
-            polylineRenderer.lineWidth = 4
+            polylineRenderer.lineWidth = 5
+            //polylineRenderer.lineDashPattern = [50,20,50]
             return polylineRenderer
         }
         return nil
@@ -169,8 +170,8 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         }
     }
 
-    func setCenterOfMapToLocation(location: CLLocationCoordinate2D){
-        let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+    func setCenterOfMapToLocation(location: CLLocationCoordinate2D, delta: Double = 0.01){
+        let span = MKCoordinateSpan(latitudeDelta: delta, longitudeDelta: delta)
         let region = MKCoordinateRegion(center: location, span: span)
         mapView.setRegion(region, animated: true)
     }
@@ -181,6 +182,38 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         return Int(output)
     }
     
+    func drawDirections() {
+        
+        let request = MKDirectionsRequest()
+        
+        let source = MKPlacemark(coordinate: coordUser, addressDictionary: nil)
+        request.setSource(MKMapItem(placemark: source))
+        
+        // Get the placemark of the destination address
+        let destination = MKPlacemark(coordinate: coordTarget, addressDictionary: nil)
+        request.setDestination(MKMapItem(placemark: destination))
+        
+        // Set the transportation method to automobile
+        request.transportType = .Automobile
+        
+        // draw directions
+        let directions = MKDirections(request:request)
+        directions.calculateDirectionsWithCompletionHandler({
+            (response:MKDirectionsResponse!, error:NSError!) -> Void in
+            if (error != nil || response == nil) {
+                return
+            }
+            let route: MKRoute = response.routes[0] as MKRoute
+            self.mapView.addOverlay(route.polyline!)
+        })
+        
+        //change zoom - fit to region
+        let center: CLLocationCoordinate2D = CLLocationCoordinate2DMake((coordUser.latitude + coordTarget.latitude) / 2.0, (coordUser.longitude + coordTarget.longitude) / 2.0);
+        let region = MKCoordinateRegionMakeWithDistance(center, Double(distance), Double(distance))
+        mapView.setRegion(region, animated: true)
+        
+    }
+    
     func getDirections(){
         
         let request = MKDirectionsRequest()
@@ -188,14 +221,14 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         let source = MKPlacemark(coordinate: coordUser, addressDictionary: nil)
         request.setSource(MKMapItem(placemark: source))
 
-        /* Get the placemark of the destination address */
+        // Get the placemark of the destination address
         let destination = MKPlacemark(coordinate: coordTarget, addressDictionary: nil)
         request.setDestination(MKMapItem(placemark: destination))
         
-        /* Set the transportation method to automobile */
+        // Set the transportation method to automobile
         request.transportType = .Automobile
         
-        /* Get the directions */
+        // Get the directions
         let directions = MKDirections(request: request)
 
         directions.calculateDirectionsWithCompletionHandler{
@@ -283,7 +316,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
             setCenterOfMapToLocation(coordUser)
         } else {
             displayAlertWithTitle("GPS problem",
-                message: "Cant determine your location")
+                message: "Can't determine your location")
         }
     }
     
@@ -298,7 +331,16 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
             getDirections()
         } else {
             displayAlertWithTitle("GPS problem",
-                message: "Cant determine your location")
+                message: "Can't determine your location")
+        }
+    }
+    
+    @IBAction func showDirections(sender: AnyObject) {
+        if (coordUser != nil) {
+            drawDirections()
+        } else {
+            displayAlertWithTitle("GPS problem",
+                message: "Can't determine your location")
         }
     }
     
